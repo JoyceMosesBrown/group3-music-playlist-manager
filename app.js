@@ -1,25 +1,30 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const playlists = require('./routes/Playlists');
+const songRoutes = require('./routes/Song');
 const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
-
-// Built-in middleware
 app.use(express.json());
 
-// API routes
-app.use('/api/auth', authRoutes);
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Generic error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong.' });
+app.use('/api/auth', authRoutes);
+app.use('/', songRoutes);
+app.use('/', playlists);
+
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Music Playlist Manager');
 });
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server running at ${PORT}`);
+});

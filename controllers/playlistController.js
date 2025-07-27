@@ -3,7 +3,7 @@ const Song = require('../models/Song');
 
 exports.createPlaylist = async (req, res) => {
     try {
-        const playlist = await Playlist.create({ name: req.body.name, user: req.user._id });
+        const playlist = await Playlist.create({ name: req.body.name, user: req.user.userId });
         res.status(201).json(playlist);
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -26,9 +26,10 @@ exports.addSongToPlaylist = async (req, res) => {
 
 exports.getUserPlaylists = async (req, res) => {
     try {
-        const playlists = await Playlist.find({ user: req.user._id }).populate('songs');
+        const playlists = await Playlist.find({ user: req.user.userId }).populate('songs');
         res.json(playlists);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error('Error in getUserPlaylists:', error);
+        res.status(500).json({ error: err.message });
     }
 };

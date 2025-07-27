@@ -22,6 +22,8 @@ exports.registerUser = async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
+    console.log('Generated JWT token:', token);
+
     res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
   } catch (err) {
     console.error(err.message);

@@ -65,6 +65,6 @@ Include the token in Authorization header to create and manage playlists
 ## Testing
 we  used Postman to test endpoints. 
 
-## Video Demo
+
 
 

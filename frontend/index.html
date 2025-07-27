@@ -9,6 +9,8 @@
 <body>
   <div class="container">
     <h1>Music Playlist Manager</h1>
+    <button onclick="logout()" style="float: right;">Logout</button>
+
 
     <!-- Login Section -->
     <!-- section class="login">
@@ -31,6 +33,22 @@
         <button type="submit">Add Song</button>
       </form>
     </section>
+
+    <!-- Playlist Creation -->
+<section class="add-playlist">
+  <h2>Create Playlist</h2>
+  <form id="playlistForm">
+    <input type="text" id="playlistName" placeholder="Playlist Name" required />
+    <button type="submit">Create Playlist</button>
+  </form>
+</section>
+
+<!-- Playlist Table -->
+<section class="playlists">
+  <h2>All Playlists</h2>
+  <ul id="playlistList"></ul>
+</section>
+
 
     <!-- Songs Table -->
     <section class="playlist">

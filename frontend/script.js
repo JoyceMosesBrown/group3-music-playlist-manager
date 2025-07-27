@@ -36,6 +36,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Load Playlists
+async function loadPlaylists() {
+  try {
+    const res = await fetch('http://localhost:5000/api/playlists', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const playlists = await res.json();
+    const list = document.getElementById('playlistList');
+    list.innerHTML = '';
+    playlists.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = p.name;
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error('Error loading playlists:', err);
+  }
+}
+
+// Create playlist
+const playlistForm = document.getElementById('playlistForm');
+if (playlistForm) {
+  playlistForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('playlistName').value;
+
+    await fetch('http://localhost:5000/api/playlists', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ name })
+    });
+
+    playlistForm.reset();
+    loadPlaylists();
+  });
+}
+
+loadPlaylists();
+
+
     // Add song
     if (form) {
       form.addEventListener('submit', async (e) => {
@@ -126,3 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+function logout() {
+  localStorage.removeItem('token');
+  alert('Logged out!');
+  window.location.href = 'login.html';
+}
+
